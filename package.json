@@ -1,0 +1,42 @@
+{
+  "name": "testtruth",
+  "version": "0.1.0",
+  "description": "Detect when an AI pull request makes your tests weaker instead of your code better.",
+  "keywords": [
+    "ai",
+    "coding-agent",
+    "mutation-testing",
+    "code-review",
+    "tests",
+    "claude-code",
+    "codex",
+    "pull-request",
+    "ci",
+    "cli"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "testtruth": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "tsc -p tsconfig.test.json && node --test \".tmp-test/tests/**/*.test.js\"",
+    "demo": "node examples/run-demo.mjs",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0"
+  }
+}
