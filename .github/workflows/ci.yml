@@ -1,0 +1,43 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: ['20', '22']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      # The demo fixtures build real git history, and these tools read git
+      # history, so a committer identity has to exist before they run.
+      - name: Configure git identity
+        run: |
+          git config --global user.name ci
+          git config --global user.email ci@example.com
+          git config --global init.defaultBranch main
+          git config --global commit.gpgsign false
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+
+      # One end-to-end run per OS. Pinned to Node 22 because the fixtures use
+      # --experimental-strip-types, which older releases do not have.
+      - name: End-to-end demo
+        if: matrix.node == '22'
+        run: npm run demo

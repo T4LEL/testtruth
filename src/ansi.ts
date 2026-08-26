@@ -1,9 +1,12 @@
 const ESC = '\x1b[';
 
+// Per the NO_COLOR spec any non-empty value disables colour; an empty one
+// means unset. FORCE_COLOR wins, so piped output can still be captured.
 const enabled =
-  process.env.NO_COLOR === undefined &&
-  process.env.TERM !== 'dumb' &&
-  process.stdout.isTTY !== false;
+  Boolean(process.env.FORCE_COLOR) ||
+  (!process.env.NO_COLOR &&
+    process.env.TERM !== 'dumb' &&
+    process.stdout.isTTY !== false);
 
 const wrap = (open: number, close: number) => (s: string) =>
   enabled ? `${ESC}${open}m${s}${ESC}${close}m` : s;

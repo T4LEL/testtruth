@@ -1,5 +1,7 @@
 # testtruth
 
+[![ci](https://github.com/T4LEL/testtruth/actions/workflows/ci.yml/badge.svg)](https://github.com/T4LEL/testtruth/actions/workflows/ci.yml) [![npm](https://img.shields.io/npm/v/testtruth.svg)](https://www.npmjs.com/package/testtruth) [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 **All tests are green. That's exactly the problem.**
 
 An agent is told to fix a bug. It changes the implementation *and* the tests.
@@ -11,32 +13,9 @@ testtruth measures the strength of your test suite before and after a change —
 using the same mutants on both sides — so a pull request that weakened the tests
 cannot hide behind a green checkmark.
 
-```
-$ testtruth main..HEAD
-
-testtruth  main..HEAD  a41f0c2..7d3b915
-
-  CHANGED
-  ──────────────────────────────────────────────────────────────────────
-  source  src/auth/token.ts                              +8   -14
-  tests   tests/token.test.js                            +6   -12
-
-  MUTATION STRENGTH  14 mutants in the changed code
-  ──────────────────────────────────────────────────────────────────────
-  before this change  ████████████████░░░░  11/14 killed   79%
-  after this change   ██████░░░░░░░░░░░░░░   4/14 killed   29%
-
-  TEST STRENGTH   -50 points  ✗ the tests got weaker
-
-  The suite is green, and it now notices 7 fewer broken behaviours than before.
-
-  NEWLY SURVIVING MUTANTS  7 total
-  ──────────────────────────────────────────────────────────────────────
-  src/auth/token.ts:7     `true` → `false`      boolean literal
-  src/auth/token.ts:8     `<=` → `<`            boundary comparison
-  src/auth/token.ts:12    `0` → `null`          return value
-  src/auth/token.ts:14    `/` → `*`             arithmetic
-```
+<p align="center">
+  <img src="https://raw.githubusercontent.com/T4LEL/testtruth/main/docs/demo.svg" alt="testtruth running against the bundled demo repository" width="100%">
+</p>
 
 Seven ways to break that code that the old tests caught and the new tests do
 not. Every one of them still passes CI.
