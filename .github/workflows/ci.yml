@@ -15,11 +15,20 @@ concurrency:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
     strategy:
       fail-fast: false
+      # Three jobs rather than a full 2x2. Node 20 on Linux catches runtime
+      # incompatibilities and Windows on Node 22 catches the path handling
+      # these tools depend on; windows+node20 only ever duplicated one of those.
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        node: ['20', '22']
+        include:
+          - os: ubuntu-latest
+            node: '20'
+          - os: ubuntu-latest
+            node: '22'
+          - os: windows-latest
+            node: '22'
 
     steps:
       - uses: actions/checkout@v4
